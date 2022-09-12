@@ -37,7 +37,7 @@ void Movement()
         }
     }
 ```
-> *Character Controller를 이용하여 움직임을 구현했습니다. 또한 Character Controller를 이용하면 중력을 구현해야 했기에 중력또한 구현하였습니다.
+> *Character Controller를 이용하여 움직임을 구현했습니다. 또한 Character Controller를 이용하면 중력을 구현해야 했기에 중력또한 구현하였습니다.*
 ```c# 
  void Update()
     {        
