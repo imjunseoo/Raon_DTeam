@@ -14,7 +14,7 @@
 > *미니게임은 더 추가할 예정이며 현재 각자 1개씩 게임을 맡아 협업중입니다.*
 
 ## 현재 게임 개발 상황(임준서)
-> 조작법은 WASD를 기본으로 LShift 달리기, Space바 점프로 구상되어있습니다.
+> 조작법은 WASD를 기본으로 LShift 달리기, Space바 점프로 구성되어있습니다.
 ### Player Move 코드
 ```c#
 void Movement()
@@ -35,5 +35,27 @@ void Movement()
         {
             anim.SetBool("isRun", false);
         }
+    }
+```
+>*Character Controller를 이용하여 움직임을 구현했습니다. 또한 Character Controller를 이용하면 중력을 구현해야 했기에 중력또한 구현하였습니다.
+```c# 
+ void Update()
+    {        
+        Movement();
+        Sprint();
+        if (characterController.isGrounded == false)
+        {
+            anim.SetBool("isJump", true);
+            moveDirection.y += gravity * Time.deltaTime;
+        }
+        else if (characterController.isGrounded == true) 
+        {
+            anim.SetBool("isJump", false);
+        }
+        if (Input.GetKeyDown(KeyCode.Space)) 
+        {
+            Jump();
+        }
+        
     }
 ```
