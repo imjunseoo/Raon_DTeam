@@ -16,7 +16,7 @@
 ## 현재 게임 개발 상황(임준서)
 > 조작법은 WASD를 기본으로 LShift 달리기, Space바 점프로 구상되어있습니다.
 ### Player Move 코드
-'''
+> ```
 void Movement()
     {
         float x = Input.GetAxisRaw("Horizontal");
@@ -36,4 +36,4 @@ void Movement()
             anim.SetBool("isRun", false);
         }
     }
-    '''
+    ```
