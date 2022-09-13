@@ -59,7 +59,33 @@ void Movement()
         
     }
 ```
-> *Character Controller의 isGrounded를 이용하여 점프중 중복하여 점프가 되지 않도록 하였습니다.*
+> *Character Controller의 isGrounded를 이용하여 점프중 중복하여 점프가 되지 않도록 하였고 중력을 구현하기 위하여isGrounded와 if문을 이용하여 플레이어의 moveDirection에  
+> 대입연산자를 이용하여 실제중력과 비슷한 9.81의 값을 계속하여 감소시키게 하였습니다.*
+
+###장애물 1 플레이어를 추적하는 오브젝트 코드
+```C#
+public class Stalker : MonoBehaviour
+{
+    private float rotspeed = 100f;
+    Rigidbody rigid;        
+    
+    private void Start()
+    {
+        rigid = GetComponent<Rigidbody>();
+    }
+
+
+
+    private void FixedUpdate()
+    {
+        transform.Rotate(new Vector3(rotspeed * Time.deltaTime, 0, 0));
+        rigid.AddForce(Vector3.forward, ForceMode.Impulse);
+    }
+
+
+}
+```
+> *Rigidbody를 이용한 AddForce로 통나무가 플레이어를 향하여 굴러가며 플레이어가 긴박함을 느낄 수 있게 해주는 장치를 구현하였습니다.*
 ### 개발해야하는 것들
 * [ ] ___회전 장애물 구현___
 * [ ] ___OnCollisionEnter를 이용한 collision의 충돌 시 플레이어에게 디버프를 부여하는 장애물아이템 만들기___
