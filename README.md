@@ -59,8 +59,7 @@ void Movement()
         
     }
 ```
-> *Character Controller의 isGrounded를 이용하여 점프중 중복하여 점프가 되지 않도록 하였고 중력을 구현하기 위하여isGrounded와 if문을 이용하여 플레이어의 moveDirection에  
-> 대입연산자를 이용하여 실제중력과 비슷한 9.81의 값을 계속하여 감소시키게 하였습니다.*
+> *Character Controller의 isGrounded를 이용하여 점프중 중복하여 점프가 되지 않도록 하였고 중력을 구현하기 위하여isGrounded와 if문을 이용하여 플레이어의 moveDirection에 대입연산자를 이용하여 실제중력과 비슷한 9.81의 값을 계속하여 감소시키게 하였습니다.*
 
 ### 장애물) 플레이어를 추적하는 오브젝트 코드
 
