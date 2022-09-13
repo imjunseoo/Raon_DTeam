@@ -59,3 +59,6 @@ void Movement()
         
     }
 ```
+> *Character Controller의 isGrounded를 이용하여 점프중 중복하여 점프가 되지 않도록 하였습니다.*
+### 개발해야하는 것들
+* [] __회전문장애물 구현___
