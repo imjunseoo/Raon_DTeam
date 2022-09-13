@@ -86,7 +86,8 @@ public class Stalker : MonoBehaviour
 
 }
 ```
-> *Rigidbody를 이용한 AddForce로 통나무가 플레이어를 향하여 굴러가며 플레이어가 긴박함을 느낄 수 있게 해주는 장치를 구현하였습니다.*
+> *Rigidbody를 이용한 AddForce로 통나무가 플레이어를 향하여 굴러가며 플레이어가 긴박함을 느낄 수 있게 해주는 장치를 구현하였습니다.* <br>
+
 ### 개발해야하는 것들
 * [ ] ___회전 장애물 구현___
 * [ ] ___OnCollisionEnter를 이용한 collision의 충돌 시 플레이어에게 디버프를 부여하는 장애물아이템 만들기___
