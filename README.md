@@ -95,4 +95,196 @@ public class Stalker : MonoBehaviour
 * [ ] ___점수 시스템과 플레이어 UI제작___
 * [x] ___플레이어를 추적하는 통나무 장애물 구현___
 
+## 현재 게임 개발 상황(이은비)
+> 여우(플레이어) 움직임 구현: 캐릭터가 움직일때 카메라도 같이 움직이도록 구현함
 
+```C#
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Foxmove : MonoBehaviour
+{
+    public float Speed = 5.0f;
+
+    public float rotateSpeed = 2.0f;       // 회전 속도
+
+    public float jumpForce = 1.0f;
+
+    Rigidbody body;
+
+    public static float h= -5, v= 16;
+
+    public static Vector3 dir = new Vector3(h, 0, v);
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        body = GetComponent<Rigidbody>();
+        //this.transform.Translate(dir);
+        this.transform.position = dir;
+    }
+
+
+    // 이동 관련 함수를 짤 때는 Update보다 FixedUpdate가 더 효율이 좋다고 한다. 그래서 사용했다.
+    void FixedUpdate()
+    {
+
+        h = Input.GetAxis("Horizontal");
+        v = Input.GetAxis("Vertical");
+
+        //Vector3 dir = new Vector3(h, 0, v); // new Vector3(h, 0, v)가 자주 쓰이게 되었으므로 dir이라는 변수에 넣고 향후 편하게 사용할 수 있게 함
+
+        transform.Translate(Vector3.forward * Speed * v * Time.deltaTime);      //이동
+        transform.Rotate(Vector3.up * rotateSpeed * h);    // 회전
+
+      
+    }
+
+    private void Update()
+    {
+        dir = this.transform.position;
+    }
+
+}
+```
+
+```C#
+    private bool isWalking; // 걷는지, 안 걷는지 판별
+    private float applySpeed;
+
+
+    private bool isRunning; // 달리는지 판별
+    private bool isDead;
+
+    [SerializeField] private float walkTime;  // 걷기 시간
+    [SerializeField] private float waitTime;  // 대기 시간
+    private float currentTime;
+
+    // 필요한 컴포넌트
+    [SerializeField] private Animator anim;
+    [SerializeField] private Rigidbody rigidl;
+    [SerializeField] private BoxCollider boxCol;
+
+    void Start()
+    {
+        currentTime = waitTime;   // 대기 시작
+        isAction = true;   // 대기도 행동
+    }
+
+    void Update()
+    {
+        Move();
+        Rotation();
+        ElapseTime();
+    }
+
+    private void Move()
+    {
+        if (isWalking)
+            rigidl.MovePosition(transform.position + transform.forward * walkSpeed * Time.deltaTime);
+    }
+
+    private void Rotation()
+    {
+        if (isWalking)
+        {
+            Vector3 _rotation = Vector3.Lerp(transform.eulerAngles, direction, 0.01f);
+            rigidl.MoveRotation(Quaternion.Euler(_rotation));
+        }
+    }
+
+    private void ElapseTime()
+    {
+        if (isAction)
+        {
+            currentTime -= Time.deltaTime;
+            if (currentTime <= 0)  // 랜덤하게 다음 행동을 개시
+                ReSet();
+        }
+    }
+
+    private void ReSet()  // 다음 행동 준비
+    {
+        isWalking = false;
+        isAction = true;
+        anim.SetBool("Walking", isWalking);
+
+        direction.Set(0f, Random.Range(0f, 360f), 0f);
+
+        RandomAction();
+    }
+
+    private void RandomAction()
+    {
+        int _random = Random.Range(0, 2); // 대기, 풀뜯기, 두리번, 걷기
+
+        if (_random == 0)
+            Wait();
+    
+        else if (_random == 1)
+            TryWalk();
+    }
+
+    private void Wait()  // 대기
+    {
+        currentTime = waitTime;
+        Debug.Log("대기");
+    }
+
+
+    private void TryWalk()  // 걷기
+    {
+        currentTime = walkTime;
+        isWalking = true;
+        anim.SetBool("Walking", isWalking);
+        Debug.Log("걷기");
+    }
+     private void Run(Vector3 _targetPos)
+    {
+        direction = Quaternion.LookRotation(transform.position - _targetPos).eulerAngles;
+
+        currentTime = runTime;
+        isWalking = false;
+        isRunning = true;
+        applySpeed = runSpeed;
+
+        anim.SetBool("Walking", isRunning);
+    }
+
+    public void Damage(int _dmg, Vector3 _targetPos)
+    {
+        if(!isDead)
+        {
+            hp -= _dmg;
+
+            if (hp <= 0)
+            {
+                Dead();
+                return;
+            }
+
+      
+            Run(_targetPos);
+        }
+    }
+
+    private void Dead()
+    {
+       
+        isWalking = false;
+        isRunning = false;
+        isDead = true;
+
+        anim.SetTrigger("Dead");
+    }
+
+
+
+}
+```
+
+###게임 개발 스크린샷
+![image](https://user-images.githubusercontent.com/101697176/190358837-df3a540d-4117-4921-b422-ade7ee23f96f.png)
+
+![image](https://user-images.githubusercontent.com/101697176/190358897-53e7827f-23c9-473b-b4b5-db1b54b5e921.png)
